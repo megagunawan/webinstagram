@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title>insta</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="heading">
+                <a href="cgi-bin/index.py">
+                    <h3>web instagram</h3>
+                </a>
+            </div>
+        </div>
+        <p style='color: red;'>
+            For first time use, please set a admin password in the following field, later access will require admin password.<br> If the application has been initialized, please enter your admin password to proceed the reset operations.
+            <br><br><b>WARNING: By pressing the button, everything will be reset, including user and image data.</b>
+        </p><br>
+        <form action="cgi-bin/init.py" method="POST">
+            <div class="form-group">
+                <input name="password" type="password" class="form-control" placeholder="set/submit admin password" pattern="^.{4,20}$" required>
+            </div><br>
+            <button type="submit" class="btn btn-danger">Initialize / Reset</button>
+            <a href="cgi-bin/index.py"><button type="button" class="btn btn-default">Return</button></a>
+        </form>
+    </div>
+</body>
+
+</html>
