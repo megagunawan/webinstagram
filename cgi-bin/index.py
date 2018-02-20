@@ -18,7 +18,7 @@ if 'HTTP_COOKIE' in os.environ:
 	except KeyError:
 		cookie_flag = 0
 
-db = conn.connect(user='root', password='', host='localhost', port='3000', database='webinstagram')
+db = conn.connect(user='root', password='', host='localhost', port='8080', database='webinstagram')
 cursor = db.cursor()
 cgitb.enable()
 
@@ -72,51 +72,42 @@ if(not page_set):
 
 page_offset = (page_set-1)*8
 if(cookie_flag == 1):
-  command = ("select username, imageid, ext, timestamp from users, images where (users.userid=image.userid) and ((disable=0 and private=0) or (private=1 and disable=0 and image.userid=" + str(result[0]) + ")) order by timestamp desc limit 8 offset " + str(page_offset) + ";")
+  command = ("select username, imageid, imgtype, timestamp from users, images where (users.userid=image.userid) and ((disable=0 and private=0) or (private=1 and disable=0 and image.userid=" + str(result[0]) + ")) order by timestamp desc limit 8 offset " + str(page_offset) + ";")
 else:
-  command = ("select username, imageid, ext, timestamp from users, images where (users.userid=image.userid) and (disable=0 and private=0) order by timestamp desc limit 8 offset " + str(page_offset) + ";")
+  command = ("select username, imageid, imgtype, timestamp from users, images where (users.userid=image.userid) and (disable=0 and private=0) order by timestamp desc limit 8 offset " + str(page_offset) + ";")
 cursor.execute(command)
 
 if(cookie_flag == 1):
   body += "<button href="login.py">Logout</button>"
+  body += "<button href="changepassword.py">Change Password</button>"
+  body += "<p>Welcome " + username + "</p>"
 else:
   body += "<button href="login.py">Login</button>"
 
-body += "<ul class='cards'>"
-
-for (username, imageid, ext, timestamp) in cursor:
+for (username, imageid, imgtype, timestamp) in cursor:
   body += ("""
-  <li class='cards__item'>
-    <div class='card'>
-      <div class='card__image'><img src='../images/{0}.{1}'></div>
-      <div class='card__content'>
-        <div class='card__title'><i class='fa fa-user'></i>{2}</div>
-        <p class='card__text'>Link: <a href='../images/{0}.{1}'>../images/{0}.{1}</a></p>
+      <div class="polaroid"><img src='../images/{0}.{1}'>
+      <div class="container">
+        User: {2}
+        <br>
+        Link: <a href='../images/{0}.{1}'>../images/{0}.{1}</a></p>
       </div>
-    </div>
-  </li>""".format(imageid, ext, username))
-
-body += "</ul>"
+    </div>""".format(imageid, imgtype, username))
 
 body += "<br><br>"
-body += "<ul class='pagination'>"
+body += "<div class='pagination'>"
 for i in range(1, max_page+1):
-  body += "<li><a href='index.py?page=" + str(i) + "'>" + str(i) + "</a></li>"
-body += "</ul>"
+  body += "<a href='index.py?page=" + str(i) + "'>" + str(i) + "</a>"
+body += "</div>"
 
 if (cookie_set == 1):
   body += """
-  <div class="upload-area">
-  <div class="input-group">
-  <form action="upload.py" method="POST" enctype="multipart/form-data" style="display: inline;">
-    <input name="file" type="file" style="margin-right: 30px;">
-    <input type="radio" checked="checked" name="mode" value="public"><span class="checkmark" style="margin-right: 5px;"></span>Public
-    <input type="radio" name="mode" value="private"><span class="checkmark" style="margin-right: 5px;"></span>Private
-    <button class="btn btn-xs btn-default" type="submit" style="margin-left: 30px;">Upload</button>
-    </form>
-  </div>
-  </div>
-  """
+          <form action="upload.py" method="POST" enctype="multipart/form-data" style="display: inline;">
+            <input name="file" type="file" style="margin-right: 30px;">
+            <input type="radio" checked="checked" name="mode" value="public"><span class="checkmark" style="margin-right: 5px;"></span>Public
+            <input type="radio" name="mode" value="private"><span class="checkmark" style="margin-right: 5px;"></span>Private
+            <button class="button" type="submit>Upload</button>
+          </form>"""
 
 print header
 print body

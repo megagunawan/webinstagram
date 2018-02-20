@@ -20,7 +20,7 @@ if 'HTTP_COOKIE' in os.environ:
 
 cgitb.enable()
 form = cgi.FieldStorage()
-db = conn.connect(user='root', password='', host='localhost', port='3000', database='webinstagram')
+db = conn.connect(user='root', password='', host='localhost', port='8080', database='webinstagram')
 cursor = db.cursor()
 
 header = """Content-type:text/html\n\n

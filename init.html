@@ -1,32 +1,27 @@
-<html>
+<!DOCTYPE html>
+
+<html lang='en'>
 
 <head>
-    <title>insta</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="../style.css">
+    <meta charset='utf-8' />
+    <title>web instagram</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="heading">
-                <a href="cgi-bin/index.py">
-                    <h3>web instagram</h3>
-                </a>
-            </div>
-        </div>
-        <p style='color: red;'>
-            For first time use, please set a admin password in the following field, later access will require admin password.<br> If the application has been initialized, please enter your admin password to proceed the reset operations.
-            <br><br><b>WARNING: By pressing the button, everything will be reset, including user and image data.</b>
-        </p><br>
-        <form action="cgi-bin/init.py" method="POST">
-            <div class="form-group">
-                <input name="password" type="password" class="form-control" placeholder="set/submit admin password" pattern="^.{4,20}$" required>
-            </div><br>
-            <button type="submit" class="btn btn-danger">Initialize / Reset</button>
-            <a href="cgi-bin/index.py"><button type="button" class="btn btn-default">Return</button></a>
-        </form>
-    </div>
+    <a href="cgi-bin/index.py">
+        <h3>web instagram</h3>
+    </a>
+    <h1>System Initialization</h1>
+    <p>If this is your first time, please enter a new password for admin account. Else, please enter the initialized admin password.</p>
+    <p>Important: all data would be deleted</p>
+    <form action="cgi-bin/init.py" method="POST">
+        <input name="password" type="password" placeholder="admin password" required>
+        <br>
+        <button type="submit">Please Go Ahead</button>
+        <a href="cgi-bin/index.py"><button type="button">Go back to index page</button></a>
+    </form>
+
 </body>
 
 </html>

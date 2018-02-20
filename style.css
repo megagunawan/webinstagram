@@ -1,5 +1,4 @@
 input {
-    width: 30%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -14,9 +13,40 @@ button {
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 30%;
 }
 
 button:hover {
     opacity: 0.8;
+}
+
+div.polaroid {
+    width: 80%;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 25px;
+}
+
+div.container {
+    text-align: center;
+    padding: 10px 20px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
 }

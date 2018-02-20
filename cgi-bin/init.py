@@ -12,7 +12,7 @@ from mysql.connector import errorcode
 
 cgitb.enable()
 form = cgi.FieldStorage()
-db = conn.connect(user='root', password='', host='localhost', port='3000', database='webinstagram')
+db = conn.connect(user='root', password='', host='localhost', port='8080', database='webinstagram')
 cursor = db.cursor()
 
 header = """Content-type:text/html\n\n
@@ -36,11 +36,12 @@ if "password" not in form:
 else:
 	pw = form["password"].value
 
-if(flag == 0):
-	cursor.execute("create table if not exists admin(password varchar(32) not null unique);")
-	conn.commit()
-	cursor.execute("select count(*) from admin;")
-	result = cursor.fetchone()
+if flag == 0:
+    cursor.execute("create database if not exists webinstagram")
+    cursor.execute("create table if not exists admin(password varchar(32) not null unique);")
+    conn.commit()
+    cursor.execute("select count(*) from admin;")
+    result = cursor.fetchone()
 
 	if(result[0] == 0):
 		cursor.execute("insert into admin values('"+pw+"');")
@@ -56,7 +57,7 @@ if(flag == 0):
 			flag = 1
 			body += "Fail to authenticate admin."
 
-if(flag != 1):
+if flag != 1:
 	cookie = Cookie.SimpleCookie()
     cookie["user"] = ''
     cookie["user"]["expires"] = \
@@ -68,7 +69,7 @@ if(flag != 1):
 	conn.commit()
 	cursor.execute("create table if not exists users(userid int not null AUTO_INCREMENT, username varchar(10) not null unique, password varchar(32) not null, PRIMARY KEY (userid));")
 	conn.commit()
-	cursor.execute("create table images(imageid varchar(10) not null unique, userid int not null, ext varchar(3) not null, timestamp timestamp not null default CURRENT_TIMESTAMP, private boolean not null default 0, disable boolean not null default 1, PRIMARY KEY (imageid), FOREIGN KEY (userid) REFERENCES users(userid));")
+	cursor.execute("create table images(imageid varchar(5) not null unique, userid int not null, imgtype varchar(3) not null, timestamp timestamp not null default CURRENT_TIMESTAMP, private boolean not null default 0, disable boolean not null default 1, PRIMARY KEY (imageid), FOREIGN KEY (userid) REFERENCES users(userid));")
 	conn.commit()
 
 	THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -82,12 +83,8 @@ if(flag != 1):
 		except Exception as e:
 			print(e)
 
-if (flag != 1):
-	body += '<br><h5>Initializing system</h5>'
-	body += "Init done, return to <a href='index.py'>index page</a><br>"
-
-if(flag != 1 and cookie != ""):
-	print cookie
+if flag != 1:
+	body += "System initialization done, return to <a href='index.py'>index page</a><br>"
 
 print header
 print body
