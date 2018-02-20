@@ -20,7 +20,7 @@ if 'HTTP_COOKIE' in os.environ:
 
 cgitb.enable()
 form = cgi.FieldStorage()
-db = conn.connect(user='root', password='', host='localhost', port='8080', database='webinstagram')
+db = conn.connect(user='root', password='', host='localhost', port='3306', database='webinstagram')
 cursor = db.cursor()
 
 header = """Content-type:text/html\n\n
@@ -60,7 +60,7 @@ else:
 		cursor.execute("select count(*) from users where username'"+user_name+"';")
 		result = cursor.fetchone()
 		if(result[0] == 0):
-			body += "There is no user with such username. <a href="register.py">Sign up</a>?"
+			body += """There is no user with such username. <a href="register.py">Sign up</a>?"""
 		else:
 			cursor.execute("select password from users where username='"+user_name+"';")
 			result = cursor.fetchone()
@@ -71,9 +71,6 @@ else:
 				cookie['user'] = user_name
     			cookie["user"]["expires"] = 3600
 				body = """Login success, return to <a href="index.py">index page</a>."""
-
-if(cookie != ""):
-	print cookie
 
 print header
 print body

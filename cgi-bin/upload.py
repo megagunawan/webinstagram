@@ -27,7 +27,7 @@ if 'HTTP_COOKIE' in os.environ:
 	except KeyError:
 		cookie_flag = 0
 
-db = conn.connect(user='root', password='', host='localhost', port='8080', database='webinstagram')
+db = conn.connect(user='root', password='', host='localhost', port='3306', database='webinstagram')
 cursor = db.cursor()
 cgitb.enable()
 
@@ -46,21 +46,21 @@ footer = """</body></html>"""
 
 flag = 1
 if (cookie_set == 0):
-    body = "Please <a href="login.py">login</a> first"
+    body = """Please <a href="login.py">login</a> first"""
     flag = 0
 else:
     form = cgi.FieldStorage()
     if not form.has_key('file'):
-        body = "<h1>File not found, return to <a href="index.py">index page</a></h1>"
+        body = """<h1>File not found, return to <a href="index.py">index page</a></h1>"""
         flag = 0
 
     form_file = form['file']
     if not form_file.file:
-        body = "<h1>File not found, return to <a href="index.py">index page</a></h1>"
+        body = """<h1>File not found, return to <a href="index.py">index page</a></h1>"""
         flag = 0
 
     if not form_file.filename:
-        body = "<h1>File not found, return to <a href="index.py">index page</a></h1>"
+        body = """<h1>File not found, return to <a href="index.py">index page</a></h1>"""
         flag = 0
 
     while True:
@@ -86,7 +86,7 @@ else:
     check_mime = magic.from_file(my_file, mime=True)
     if(check_mime != 'image/jpeg' and check_mime != 'image/png' and check_mime != 'image/gif'):
         flag_err = 1
-        body = "image type is wrong, has to be jpeg, png or gif, return to <a href="index.py">index page</a>"
+        body = """image type is wrong, has to be jpeg, png or gif, return to <a href="index.py">index page</a>"""
     elif(check_mime == 'image/jpeg'):
         img_type = 'jpg'
     elif(check_mime == 'image/png'):
@@ -116,8 +116,8 @@ if (flag == 1):
         body += "<p>no submitted file.</p>"
 
     try:
-        body += "<button href='edit.py?id=" + image_id + "'>Edit or discard this image</button>
-        body += "Return to <a href="index.py">index page</a>"
+        body += "<button href='edit.py?id=" + image_id + "'>Edit or discard this image</button>"
+        body += """Return to <a href="index.py">index page</a>"""
     except:
         body += "<p>upload failed.</p>"
 

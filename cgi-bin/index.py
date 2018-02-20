@@ -8,6 +8,8 @@ import Cookie
 import mysql.connector
 from mysql.connector import errorcode
 
+print "test"
+
 if 'HTTP_COOKIE' in os.environ:
 	cookie_string = os.environ.get('HTTP_COOKIE')
 	cookie = Cookie.SimpleCookie()
@@ -18,7 +20,7 @@ if 'HTTP_COOKIE' in os.environ:
 	except KeyError:
 		cookie_flag = 0
 
-db = conn.connect(user='root', password='', host='localhost', port='8080', database='webinstagram')
+db = conn.connect(user='root', password='', host='localhost', port='3306', database='webinstagram')
 cursor = db.cursor()
 cgitb.enable()
 

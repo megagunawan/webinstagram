@@ -12,7 +12,7 @@ from mysql.connector import errorcode
 
 cgitb.enable()
 form = cgi.FieldStorage()
-db = conn.connect(user='root', password='', host='localhost', port='8080', database='webinstagram')
+db = conn.connect(user='root', password='', host='localhost', port='3306', database='webinstagram')
 cursor = db.cursor()
 
 header = """Content-type:text/html\n\n
@@ -42,7 +42,6 @@ if flag == 0:
     conn.commit()
     cursor.execute("select count(*) from admin;")
     result = cursor.fetchone()
-
 	if(result[0] == 0):
 		cursor.execute("insert into admin values('"+pw+"');")
 		conn.commit()
