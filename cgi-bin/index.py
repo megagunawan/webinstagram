@@ -8,8 +8,6 @@ import Cookie
 import mysql.connector
 from mysql.connector import errorcode
 
-print "test"
-
 if 'HTTP_COOKIE' in os.environ:
 	cookie_string = os.environ.get('HTTP_COOKIE')
 	cookie = Cookie.SimpleCookie()
@@ -80,11 +78,11 @@ else:
 cursor.execute(command)
 
 if(cookie_flag == 1):
-  body += "<button href="login.py">Logout</button>"
-  body += "<button href="changepassword.py">Change Password</button>"
+  body += """<button href="login.py">Logout</button>"""
+  body += """<button href="changepassword.py">Change Password</button>"""
   body += "<p>Welcome " + username + "</p>"
 else:
-  body += "<button href="login.py">Login</button>"
+  body += """<button href="login.py">Login</button>"""
 
 for (username, imageid, imgtype, timestamp) in cursor:
   body += ("""

@@ -83,9 +83,9 @@ else:
     PREV_FOLDER = os.path.abspath(os.path.join(THIS_FOLDER, os.pardir))
     TARGET = PREV_FOLDER + '/images/'
     image_file = os.path.join(TARGET + image_id + filetype)
-    check_mime = magic.from_file(my_file, mime=True)
-    if(check_mime != 'image/jpeg' and check_mime != 'image/png' and check_mime != 'image/gif'):
-        flag_err = 1
+    type_check = magic.from_file(image_file, mime=True)
+    if(type_check != 'image/jpeg' and type_check != 'image/png' and type_check != 'image/gif'):
+        flag = 0
         body = """image type is wrong, has to be jpeg, png or gif, return to <a href="index.py">index page</a>"""
     elif(check_mime == 'image/jpeg'):
         img_type = 'jpg'
@@ -98,6 +98,30 @@ else:
         private = 1
     else:
         private = 0
+
+    image_id = str(image_id)
+    img = Image.open(TARGET + image_id + '.' + img_type)
+    if(img_type == 'gif'):
+        img.seek(0)
+        img = img.convert('RGB')
+
+    width, height = img.size
+    filter1 = ImageOps.expand(img,border=30,fill='black')
+    overlay = Image.new(img.mode, img.size, "#0000CC")
+    bw_src = ImageEnhance.Color(img).enhance(0.0)
+    filter2 = Image.blend(bw_src, overlay, 0.3)
+    filter3 = img.convert('L')
+    filter4 = img.filter(ImageFilter.BLUR)
+    lensflare = Image.open("../lensflare.png")
+    lensflare = lensflare.convert("RGB")
+    lensflare = lensflare.crop((0,0,width,height))
+    filter5 = Image.blend(img, lensflare, 0.4)
+    
+    filter1.save(TARGET + image_id + '1' + '.' + img_type)
+    filter2.save(TARGET + image_id + '2' + '.' + img_type)
+    filter3.save(TARGET + image_id + '3' + '.' + img_type)
+    filter4.save(TARGET + image_id + '4' + '.' + img_type)
+    filter5.save(TARGET + image_id + '5' + '.' + img_type)
 
     cursor.execute("select userid from users where username='"+username+"';")
     result = cursor.fetchone()
@@ -116,8 +140,7 @@ if (flag == 1):
         body += "<p>no submitted file.</p>"
 
     try:
-        body += "<button href='edit.py?id=" + image_id + "'>Edit or discard this image</button>"
-        body += """Return to <a href="index.py">index page</a>"""
+        body += "<button href='edit.py?id=" + image_id + "'>Continue</button>"
     except:
         body += "<p>upload failed.</p>"
 
